@@ -1,0 +1,60 @@
+// Implementation of base digital input class
+// Examples : push button
+// At creation, is initalized as :
+// Listens to physical counterpart for changes to its value 
+<polymer-element name="digital-input" attributes="value arduinoId pin" >
+	
+	<template >
+		
+		<style>
+			:host {
+				display:inline-block;
+				width: 40px ;
+				height: 40px;
+				border: 3px solid rgb(205,205,210);
+			}
+		</style>
+	</template>
+
+	<script>
+		Polymer('digital-input', {
+
+			value: 0, 
+			arduinoId : 0, 
+		
+			created: function(){
+			},
+
+			//For value change, 
+			pinChanged: function(){
+				
+				var type = 'a';
+				var p = String.fromCharCode( Number(this.pin)+97);
+				var adType = 'd'; // Analog/Digital type, 'd' for digital, 'a' for analog
+				var ioType = 'a'; // Input/Output type, 'a' for input, 'b' for output
+
+				var data = {
+					msg : 'configurePin',
+					content : p+ioType+adType
+				};
+
+				// Initalize pin on arduino
+				socket.emit('initPin', data);
+				var that = this;
+
+				// Listen to value changes on arduino
+				socket.on('digitalRead', function (data) {
+					if (data.arduinoId == that.arduinoId && data.pin == that.pin){
+						that.value = data.value;
+					}
+				});
+
+			},
+
+			valueChanged: function(){
+			}
+		});
+
+	</script>
+
+</polymer-element>

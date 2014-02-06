@@ -1,0 +1,67 @@
+
+
+// **************** PRESSURE sensor
+
+// Input : listens to value of physical flex and converts value to angle, 
+// Assumes 10K resistor addes as voltage divider to simple Adafruit Flex Sensor
+
+</polymer-element>
+<polymer-element name="th-pressure"  extends="th-analoginput" attributes="pressure">
+	
+	<template >
+		
+		<style>
+		</style>
+	</template>
+
+	<script>
+		Polymer('th-pressure', {
+		
+			// pressure is normalized to a value 0-1
+			pressure:0,
+
+			// boolean isPressed represents if the pressure sensor is pressed
+			// assume pressure <0.05 is noise, ie not pressed
+			isPressed:false,
+
+			// When element is created, listens to flex value 	
+			created: function(){
+				this.super();
+				var that = this;
+			},
+
+			// Map pressure value from range 0-1023 to 0-1
+			valueChanged: function(){
+				this.super();
+				this.pressure  = this.value/1023; // maps value to angle
+				if (this.pressure > 0.05){
+					this.isPressed = true;
+				}
+				if (this.pressure < 0.05){
+					this.isPressed = false;
+				}
+			},
+
+			pressureChanged: function(){
+
+			},
+
+			isPressedChanged: function(){
+				console.log('is pressed changed!');
+				if(this.isPressed == true)
+					this.onPress();
+				else
+					this.onRelease();
+			},
+
+			onPress: function(){
+				console.log('On press!');
+
+			},
+			onRelease: function(){
+				console.log('On release!');
+
+			}
+		});
+	</script>
+

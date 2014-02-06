@@ -1,0 +1,63 @@
+
+// **************** BUTTON
+// INPUT : ...
+
+</polymer-element>
+<polymer-element name="th-button"  extends="digital-input">
+	
+	<template>
+		
+		<style>
+			:host {
+				display:inline-block;
+				width: 40px !important;
+				height: 40px !important;
+				border: 3px solid rgb(195,195,210);
+				background-color: rgb(210,210,220);
+				transition: background-color 0.3s ease-in, border-color 0.3s ease-in;
+				-webkit-transition: background-color 0.3s ease-in, border-color 0.3s ease-in; 
+			}
+		</style>
+	</template>
+
+	<script>
+		Polymer('th-button', {
+		
+			// When element is created, listens to proper entry in database based on
+			// {arduinoId, pin} pair	
+			created: function(){
+				this.super();
+			},
+			// colorChanged: function(){
+			// 	$(this).css({'background-color':this.color});
+			// }, 
+
+			//For value change, update styling of element and send
+			//Digital Write msg to corresponding physical LED
+
+			valueChanged: function(){
+				// console.log('in value changed');
+				// var that = this;
+				// if (this.value == 0){
+				// 	$(this).css({'background-color':'rgb(50,60,70)'});
+				// 	$(this).css({'border-color':'black'});
+				// } else {
+				// 	$(this).css({'background-color':this.color});
+				// 	$(this).css({'border-color':'rgb(200,0,0'});
+				// }
+
+				this.super();
+				if (this.value == 0){
+					this.onClick();
+				}
+
+			},
+
+			onClick: function(){
+				console.log('clicked');
+			}
+		});
+	</script>
+
+
+</polymer-element>

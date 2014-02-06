@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+    <title>mySynth</title>
+
+    <script src='/scripts/jquery.js'></script>
+
+    <script src="/components/polymer/polymer.min.js"></script>
+    <script src="/components/polymer/pointerevents.js"></script>
+    <script src="/scripts/things.js"></script>
+
+    <script src="/scripts/socket.io.js"></script>
+
+    <link rel="import" href="/interactors/things.html">
+
+    <style>
+        body{
+            background: rgb(240,240,242);
+            text-align:center;
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<script>        
+    var socket = io.connect('http://localhost:8080');
+</script>
+
+
+    <div id='container'>
+
+    <th-led id='led' pin=8></th-led>
+    <th-button id='button' pin=6></th-button>
+    <th-pressure id='pressure' pin=3></th-pressure>
+
+    </div>
+
+
+    <script>
+        // Testing the button and LED implementations 
+        // Simple circuit, turn ON and OFF LED with button click
+        var button = $('#button')[0];
+        var pressure = $('#pressure')[0];
+        var led = $('#led')[0];
+
+        button.onClick = function(){
+            if (led.isOn()){
+                led.turnOff();
+            } else {
+                led.turnOn();
+            }
+        }
+        pressure.onPress = function(){
+            if (led.isOn()){
+                led.turnOff();
+            } else {
+                led.turnOn();
+            }
+        }
+    </script>
+
+
+</body>
+</html>

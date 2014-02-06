@@ -1,0 +1,68 @@
+
+// Implementation of base digital output class
+// Examples : LED
+// At creation, is initalized as : 
+// Writes to its digital counterpart its value when changed
+  socket = io.connect('http://localhost:8080');
+<polymer-element name="digital-output" attributes="value arduinoId pin" >
+	
+	<template >
+		
+		<style>
+			:host {
+				display:inline-block;
+				width: 40px ;
+				height: 40px;
+				border: 3px solid rgb(205,205,210);
+			}
+		</style>
+	</template>
+
+	<script>
+		Polymer('digital-output', {
+
+			value: 0, 
+			arduinoId : 0, 
+			pin: 4,
+		
+			created: function(){
+				////console.log('created Digital Output');
+				
+				var adType = 'd'; // Analog/Digital type, 'd' for digital, 'a' for analog
+				var ioType = 'b'; // Input/Output type, 'a' for input, 'b' for output
+				var p = String.fromCharCode(this.pin+97);
+
+				var data = {
+					msg : 'configurePin',
+					content : p+ioType+adType
+				}
+				socket.emit('initPin', data);
+			},
+
+			//For value change, 
+			//Digital Write msg to corresponding physical acctuator
+			valueChanged: function(){
+				////console.log('Value for LED changed, value is now : '+this.value);
+				var that = this;
+				var p = String.fromCharCode(this.pin+97);
+
+				var data = {};
+				if (this.value == 0){
+					 data =  {
+						msg:'digitalWrite', 
+						content: p+'0'
+					};
+				} else {
+					data = {
+						msg:'digitalWrite', 
+						content: p+'1'
+					};
+				}
+				socket.emit('writeToPin', data);
+			}
+		});
+	</script>
+
+</polymer-element>
+
+
